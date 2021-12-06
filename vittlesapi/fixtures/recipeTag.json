@@ -1,0 +1,10 @@
+[
+    {
+        "model": "vittlesapi.recipeTag",
+        "pk": 1,
+        "fields": {
+            "recipe": 1,
+            "tag": 1
+        }
+    }
+]

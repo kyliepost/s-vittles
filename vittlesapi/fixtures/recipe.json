@@ -1,0 +1,11 @@
+[
+    {
+        "model": "vittlesapi.recipe",
+        "pk": 1,
+        "fields": {
+            "name": "Iced Strawberry Dessert",
+            "ingredients": "250 grams strawberries, 1 teaspoon lemon juice, 3 egg whites, 200 grams sugar, 200 milliliters cream, 8 whole strawberries",
+            "description": "Line bowls with parchment paper up the sides, about 2 cm (approximately 3/4 inches). Mince strawberries, add lemon juice and set aside. In a bowl, beat egg whites until foamy. Heat bowl in a water bath, and continue to whisk while adding the sugar until stiff. Pass strawberries through a sieve. Beat cream until stiff and mix with strawberries and egg white mixture. Distribute mixture evenly into prepared cups. Freeze for about 6 hours. Remove from freezer about 15 minutes before serving. Garnish with fresh strawberries."
+        }
+    }
+]

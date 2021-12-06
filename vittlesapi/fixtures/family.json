@@ -1,0 +1,11 @@
+[
+    {
+        "model": "vittlesapi.family",
+        "pk": 1,
+        "fields": {
+            "name": "The Smiths",
+            "bio": "The most important thing in the world is family and love. –John Wooden",
+            "user": 1
+        }
+    }
+]
