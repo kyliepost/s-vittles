@@ -5,8 +5,6 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
-from vittlesapi.models import User
-
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def login_user(request):
@@ -31,8 +29,6 @@ def login_user(request):
 @permission_classes([AllowAny])
 def register_user(request):
 
-
-
     new_user = User.objects.create_user(
         username=request.data['username'],
         password=request.data['password'],
@@ -41,7 +37,6 @@ def register_user(request):
     )
 
     user = User.objects.create(
-        bio=request.data['bio'],
         user=new_user
     )
 
