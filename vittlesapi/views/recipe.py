@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
 from django.core.exceptions import ValidationError
-from vittlesapi.models import Recipe
+from vittlesapi.models import Recipe, Tag
 
 
 class RecipeView(ViewSet):
@@ -58,7 +58,11 @@ class RecipeView(ViewSet):
         except Exception as ex:
             return Response({'message': ex.args[0]}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-
+class RecipeTagSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Tag
+        fields = ('id','description')
 
 class RecipeSerializer(serializers.ModelSerializer):
 
