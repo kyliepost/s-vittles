@@ -5,60 +5,63 @@ from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
 from django.core.exceptions import ValidationError
-from vittlesapi.models import Family, family
+from vittlesapi.models import Recipe
 
 
-class FamilyView(ViewSet):
+class RecipeView(ViewSet):
     
-
+    
     def retrieve(self, request, pk=None):
 
         try:
-            family = Family.objects.get(pk=pk)
-            serializer = FamilySerializer(family, context={'request': request})
+            recipe = Recipe.objects.get(pk=pk)
+            serializer = RecipeSerializer(recipe, context={'request': request})
             return Response(serializer.data)
         except Exception as ex:
             return HttpResponseServerError(ex)
 
+
+
     def list(self, request):
 
-        families = Family.objects.all()
+        recipes = Recipe.objects.all()
 
-        serializer = FamilySerializer(
-            families, many=True, context={'request': request})
+        serializer = RecipeSerializer(
+            recipes, many=True, context={'request': request})
         return Response(serializer.data)
     
     
     def create(self, request):
         
         try:               
-            family = Family.objects.create(
-                user = request.auth.user,
+            recipe = Recipe.objects.create(
                 name = request.data["name"],
-                bio = request.data['bio']
+                ingredients = request.data["ingredients"],
+                description = request.data["description"]
             )
-            family_serializer = FamilySerializer(family, context={'request': request})
-            return Response(family_serializer.data, status=status.HTTP_201_CREATED)
+            recipe_serializer = RecipeSerializer(recipe, context={'request': request})
+            return Response(recipe_serializer.data, status=status.HTTP_201_CREATED)
         except ValidationError as ex:
             return Response({'message': ex.args[0]}, status=status.HTTP_400_BAD_REQUEST)
-        
         
     def destroy(self, request, pk=None):
 
         try:
-            family = Family.objects.get(pk=pk)
-            family.delete()
+            recipe = Recipe.objects.get(pk=pk)
+            recipe.delete()
 
             return Response({}, status=status.HTTP_204_NO_CONTENT)
 
-        except Family.DoesNotExist as ex:
+        except Recipe.DoesNotExist as ex:
             return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
 
         except Exception as ex:
             return Response({'message': ex.args[0]}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-class FamilySerializer(serializers.ModelSerializer):
+
+
+class RecipeSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = Family
-        fields = ('id', 'name', 'bio', 'user')
+        model = Recipe
+        fields = ('name', 'ingredients', 'description')
