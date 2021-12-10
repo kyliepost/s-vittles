@@ -69,7 +69,8 @@ class RecipeView(ViewSet):
         try:
             recipe = Recipe.objects.get(user=request.auth.user, pk=pk)
             user = User.objects.get(user=request.auth.user)
-            recipe.app_user=user
+            
+            recipe.user=user
             recipe.name = request.data["name"],
             recipe.ingredients = request.data['ingredients'],
             recipe.description = request.data['description'],
@@ -84,11 +85,11 @@ class RecipeView(ViewSet):
             return Response({"Message", ex.args[0]}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-# class RecipeTagSerializer(serializers.ModelSerializer):
+class RecipeTagSerializer(serializers.ModelSerializer):
     
-#     class Meta:
-#         model = Tag
-#         fields = ('id','description')
+    class Meta:
+        model = Tag
+        fields = ('id','description')
 
 class RecipeSerializer(serializers.ModelSerializer):
 
