@@ -26,7 +26,7 @@ class RecipeView(ViewSet):
 
         recipes = Recipe.objects.all()
         
-        tag = self.request.query_params.get('type', None)
+        tag = self.request.query_params.get('tag', None)
         if tag is not None:
             recipes = recipes.filter(tag__id=tag)
 
@@ -92,8 +92,10 @@ class RecipeTagSerializer(serializers.ModelSerializer):
         fields = ('id','description')
 
 class RecipeSerializer(serializers.ModelSerializer):
-
+    
+    tags = RecipeTagSerializer(many=True)
+    
     class Meta:
         model = Recipe
-        fields = ('id', 'name', 'ingredients', 'description', 'tag')
+        fields = ('id', 'name', 'ingredients', 'description', 'tags')
         depth = 1
