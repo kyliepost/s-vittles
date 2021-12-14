@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
 from django.core.exceptions import ValidationError
-from vittlesapi.models import Recipe, Tag, recipe
+from vittlesapi.models import Recipe, Tag, family, recipe, familyBook
 
 
 class RecipeView(ViewSet):
@@ -45,6 +45,10 @@ class RecipeView(ViewSet):
                 description = request.data["description"]
             )
             recipe.tags.set(request.data['tags'])
+            familyBook.objects.create(
+                family_id = request.data['family'],
+                recipe = recipe
+            )
             recipe_serializer = RecipeSerializer(recipe, context={'request': request})
             return Response(recipe_serializer.data, status=status.HTTP_201_CREATED)
         except ValidationError as ex:
@@ -96,5 +100,5 @@ class RecipeSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Recipe
-        fields = ('id', 'name', 'ingredients', 'description', 'tags')
+        fields = ('id', 'name', 'ingredients', 'description', 'tags', 'books')
 
