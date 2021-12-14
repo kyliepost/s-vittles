@@ -37,15 +37,14 @@ class RecipeView(ViewSet):
     
     def create(self, request):
         
-        tag = Tag.objects.get(pk=request.data['tagId'])
         
         try:               
             recipe = Recipe.objects.create(
                 name = request.data["name"],
                 ingredients = request.data["ingredients"],
-                description = request.data["description"],
-                tag = tag
+                description = request.data["description"]
             )
+            recipe.tags.set(request.data['tags'])
             recipe_serializer = RecipeSerializer(recipe, context={'request': request})
             return Response(recipe_serializer.data, status=status.HTTP_201_CREATED)
         except ValidationError as ex:
@@ -98,4 +97,4 @@ class RecipeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Recipe
         fields = ('id', 'name', 'ingredients', 'description', 'tags')
-        depth = 1
+

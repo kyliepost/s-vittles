@@ -6,6 +6,7 @@ from rest_framework import serializers
 from rest_framework import status
 from django.core.exceptions import ValidationError
 from vittlesapi.models import Family, family
+from rest_framework.decorators import action
 
 
 class FamilyView(ViewSet):
@@ -56,6 +57,19 @@ class FamilyView(ViewSet):
 
         except Exception as ex:
             return Response({'message': ex.args[0]}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+    @action(methods=['GET'], detail=False) 
+    def getCurrentUser(self, request):
+        user = User.objects.get(pk=request.auth.user.id)
+        serializer = UserSerializer(user, many=False)
+        return Response(serializer.data)
+        
+        
+class UserSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model= User
+        fields = ('id',)   
 
 class FamilySerializer(serializers.ModelSerializer):
 

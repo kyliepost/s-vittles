@@ -33,3 +33,4 @@ class FamilyBookSerializer(serializers.ModelSerializer):
     class Meta:
         model = familyBook
         fields = ('id', 'recipe', 'family')
+        depth = 1
