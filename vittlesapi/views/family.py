@@ -76,4 +76,4 @@ class FamilySerializer(serializers.ModelSerializer):
     class Meta:
         model = Family
         fields = ('id', 'name', 'bio', 'user', 'recipes')
-        
+        depth = 2
