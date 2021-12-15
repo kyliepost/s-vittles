@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.http import HttpResponseServerError
+from rest_framework.decorators import action
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers
@@ -70,23 +71,37 @@ class RecipeView(ViewSet):
         
     def update(self, request,pk):
         try:
-            recipe = Recipe.objects.get(user=request.auth.user, pk=pk)
-            user = User.objects.get(user=request.auth.user)
+            recipe = Recipe.objects.get(pk=pk)
             
-            recipe.user=user
+            recipe.user=request.auth.user,
             recipe.name = request.data["name"],
             recipe.ingredients = request.data['ingredients'],
             recipe.description = request.data['description'],
             
-            tag = Tag.objects.get(pk=request.data['tagId'])
-            recipe.tag = tag
+            recipe.tags.set(request.data['tags'])
+            familyBook.objects.create(
+                family_id = request.data['family'],
+                recipe = recipe
+            )
+            
             recipe.save()
             return Response({"Message", "Recipe Updated"}, status=status.HTTP_204_NO_CONTENT)
         except Recipe.DoesNotExist as ex:
             return Response({"Message", ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
         except Exception as ex:
             return Response({"Message", ex.args[0]}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+#     @action(methods=['GET'], detail=False) 
+#     def getCurrentUser(self, request):
+#         user = User.objects.get(pk=request.auth.user.id)
+#         serializer = UserSerializer(user, many=False)
+#         return Response(serializer.data)
 
+# class UserSerializer(serializers.ModelSerializer):
+    
+#     class Meta:
+#         model= User
+#         fields = ('id',)   
 
 class RecipeTagSerializer(serializers.ModelSerializer):
     
