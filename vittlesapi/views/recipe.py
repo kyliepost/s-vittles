@@ -73,16 +73,15 @@ class RecipeView(ViewSet):
         try:
             recipe = Recipe.objects.get(pk=pk)
             
-            recipe.user=request.auth.user,
-            recipe.name = request.data["name"],
-            recipe.ingredients = request.data['ingredients'],
-            recipe.description = request.data['description'],
+            recipe.user=request.auth.user
+            recipe.name = request.data["name"]
+            recipe.ingredients = request.data['ingredients']
+            recipe.description = request.data['description']
             
             recipe.tags.set(request.data['tags'])
-            familyBook.objects.create(
-                family_id = request.data['family'],
-                recipe = recipe
-            )
+            recipe.familyBook_id = request.data['books']
+            recipe = recipe
+
             
             recipe.save()
             return Response({"Message", "Recipe Updated"}, status=status.HTTP_204_NO_CONTENT)
@@ -116,5 +115,6 @@ class RecipeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Recipe
         fields = ('id', 'name', 'ingredients', 'description', 'tags', 'books')
+        depth = 2
 
 
