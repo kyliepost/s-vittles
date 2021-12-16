@@ -90,17 +90,17 @@ class RecipeView(ViewSet):
         except Exception as ex:
             return Response({"Message", ex.args[0]}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
-#     @action(methods=['GET'], detail=False) 
-#     def getCurrentUser(self, request):
-#         user = User.objects.get(pk=request.auth.user.id)
-#         serializer = UserSerializer(user, many=False)
-#         return Response(serializer.data)
+    @action(methods=['GET'], detail=False) 
+    def getCurrentUser(self, request):
+        user = User.objects.get(pk=request.auth.user.id)
+        serializer = UserSerializer(user, many=False)
+        return Response(serializer.data)
 
-# class UserSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     
-#     class Meta:
-#         model= User
-#         fields = ('id',)   
+    class Meta:
+        model= User
+        fields = ('id', )   
 
 class RecipeTagSerializer(serializers.ModelSerializer):
     
@@ -114,7 +114,7 @@ class RecipeSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Recipe
-        fields = ('id', 'name', 'ingredients', 'description', 'tags', 'books')
-        depth = 2
+        fields = ('id', 'name', 'ingredients', 'description', 'tags', 'books', 'user')
+        depth = 3
 
 
