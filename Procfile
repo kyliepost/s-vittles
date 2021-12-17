@@ -1,0 +1,1 @@
+web: gunicorn vittles.wsgi --log-file -
