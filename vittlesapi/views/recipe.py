@@ -38,7 +38,6 @@ class RecipeView(ViewSet):
     
     def create(self, request):
         
-        
         try:               
             recipe = Recipe.objects.create(
                 user = User.objects.get(pk=request.auth.user.id),
