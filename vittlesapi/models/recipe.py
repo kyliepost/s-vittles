@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 from django.db.models.fields import related
 
 class Recipe(models.Model):
@@ -7,3 +8,4 @@ class Recipe(models.Model):
     ingredients = models.TextField()
     description = models.TextField()
     tags = models.ManyToManyField('Tag', through='recipeTag', related_name="Recipe")
+    user = models.ForeignKey(User, on_delete=models.CASCADE)

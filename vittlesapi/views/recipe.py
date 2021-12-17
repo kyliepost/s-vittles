@@ -41,6 +41,7 @@ class RecipeView(ViewSet):
         
         try:               
             recipe = Recipe.objects.create(
+                user = User.objects.get(pk=request.auth.user.id),
                 name = request.data["name"],
                 ingredients = request.data["ingredients"],
                 description = request.data["description"]
@@ -111,6 +112,7 @@ class RecipeTagSerializer(serializers.ModelSerializer):
 class RecipeSerializer(serializers.ModelSerializer):
     
     tags = RecipeTagSerializer(many=True)
+    user = UserSerializer(many=False)
     
     class Meta:
         model = Recipe
